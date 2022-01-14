@@ -1,39 +1,14 @@
-# Domain Primitives Java
+package de.novatec.domainprimitives.examples;
 
-![License](https://img.shields.io/hexpm/l/plug)
+import de.novatec.domainprimitives.type.PrimitiveType;
+import de.novatec.domainprimitives.validation.InvariantException;
+import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 
-Primitive, self-validating immutable object types.
+import static de.novatec.domainprimitives.validation.Constraints.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-*Invented by [Stefan Ludwig](https://github.com/slu-it)*
-
-# Table of Contents
-
-* 🚀 [Features](#features)
-* 📚 [Releases](#releases)
-* 👩‍💻/👨‍💻 [Contributing](#contributing)
-* 📨 [Contact](#contact)
-
-# 🚀Features
-
-## Primitive Type
-
-The `PrimitiveType<T>` could be used to create a self-validating immutable object:
-
-```java
-class Name extends PrimitiveType<String> {
-    public Name(String value) {
-        super(value, "Name",
-                isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
-    }
-}
-```
-
-It's only possible to create a valid object if it matches the pattern. The `PrimitiveType` does only provide a getter resulting in an immutable object.
-
-Creating a name object with an invalid value will throw an InvariantException:
-
-```java
-class NameTest {
+class ReadmeNameExampleTest {
 
     @Test
     void should_create_valid_object() {
@@ -81,21 +56,10 @@ class NameTest {
         }
     }
 }
-```
 
-# 📚Releases
-
-tbd
-
-# 👩‍💻/👨‍💻Contributing
-
-Do you want to contribute to our open source project?
-Read the [Contribution Guidelines](CONTRIBUTING.md) and get started 🙂 
-
-# 📨Contact
-
-If you have any questions or ideas feel free to create an [issue](https://github.com/domain-primitives/domain-primitives-java/issues).
-
-This open source project is being developed by [Novatec Consulting GmbH](https://www.novatec-gmbh.de/) with the support of the open source community.
-
-![Novatec Consulting GmbH](novatec.jpeg)
+class Name extends PrimitiveType<String> {
+    public Name(String value) {
+        super(value, "Name",
+                isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
+    }
+}
