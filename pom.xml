@@ -6,7 +6,7 @@
 
     <groupId>de.novatec.domainprimitives</groupId>
     <artifactId>domainprimitives-java</artifactId>
-    <version>0.0.1</version>
+    <version>0.1.0</version>
 
     <name>Novatec | Domain Primitives</name>
     <url>https://github.com/domain-primitives/domain-primitives-java</url>

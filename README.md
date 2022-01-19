@@ -83,6 +83,14 @@ class NameTest {
 }
 ```
 
+## Composed Value Objects, Aggregates and Entities
+
+The abstract `ComposedValueObject`, `Aggregate` and `Entity` classes allow expressive definitions with some helpful methods for validation.
+
+Have a look, e.g. at the [`Person`](src/test/java/de/novatec/domainprimitives/object/testdata/Person.java) example.
+
+Providing methods for null-validation (`validateNotNull`) and adding custom validations (`addInvariantViolation`) to the list of violations, which could be evaluated (`evaluateValidations`).
+
 # 📚Releases
 
 tbd
