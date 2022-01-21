@@ -10,7 +10,7 @@ import static de.novatec.domainprimitives.validation.Validation.none;
 public abstract class PrimitiveType<T> {
 
     private final T value;
-    private String label = getClass().getSimpleName();
+    private final String label;
 
     /**
      * Construct the object without any validation constrains.
@@ -44,6 +44,7 @@ public abstract class PrimitiveType<T> {
      */
     public PrimitiveType(T value, Consumer<Validation<T>> constraints) {
         this.value = value;
+        this.label = this.getClass().getSimpleName();
         runValidation(constraints);
     }
 

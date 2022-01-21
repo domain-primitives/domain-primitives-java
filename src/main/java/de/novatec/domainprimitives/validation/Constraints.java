@@ -6,12 +6,12 @@ import static java.lang.String.format;
 
 public class Constraints {
 
-    private static final String ERROR_MESSAGE_TEMPLATE = "%s should not be null";
+    private static final String NULL = "null";
+    private static final String NULL_ERROR_MESSAGE_TEMPLATE = "%s should not be " + NULL;
     private static final String ERROR_MESSAGE_RANGE_TEMPLATE = "%s should be between %s and %s";
     private static final String ERROR_MESSAGE_GREATER_THAN_TEMPLATE = "%s should be greater then %s";
     private static final String ERROR_MESSAGE_LESS_THAN_TEMPLATE = "%s should be less then %s";
 
-    private static final String NULL = "null";
     private static final String UUID_PATTERN = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}";
 
     private Constraints() {
@@ -21,7 +21,7 @@ public class Constraints {
 
     public static Consumer<Validation<String>> isNotNull() {
         return val -> val.constraint(
-                isNotNull(val.value()), () -> format(ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+                isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
         );
     }
 
@@ -86,7 +86,7 @@ public class Constraints {
 
     public static Consumer<Validation<Integer>> isNotNullInteger() {
         return val -> val.constraint(
-                isNotNull(val.value()), () -> format(ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+                isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
         );
     }
 
@@ -123,7 +123,7 @@ public class Constraints {
 
     public static Consumer<Validation<Long>> isNotNullLong() {
         return val -> val.constraint(
-                isNotNull(val.value()), () -> format(ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+                isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
         );
     }
 
@@ -160,7 +160,7 @@ public class Constraints {
 
     public static Consumer<Validation<Double>> isNotNullDouble() {
         return val -> val.constraint(
-                isNotNull(val.value()), () -> format(ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+                isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
         );
     }
 
@@ -197,7 +197,7 @@ public class Constraints {
 
     public static Consumer<Validation<Boolean>> isNotNullBoolean() {
         return val -> val.constraint(
-                isNotNull(val.value()), () -> format(ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+                isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
         );
     }
 
