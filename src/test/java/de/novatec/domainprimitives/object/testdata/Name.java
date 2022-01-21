@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotBlank;
 
 public class Name extends PrimitiveType<String> {
     public Name(String value) {
-        super(value, "Name", isNotBlank());
+        super(value, isNotBlank());
     }
 }

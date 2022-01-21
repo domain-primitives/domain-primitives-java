@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotNullLong;
 
 public class NotNullLong extends PrimitiveType<Long> {
     public NotNullLong(Long value) {
-        super(value, "NotNullLong", isNotNullLong());
+        super(value, isNotNullLong());
     }
 }

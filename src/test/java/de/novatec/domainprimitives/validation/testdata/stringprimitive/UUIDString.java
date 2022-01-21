@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isUUID;
 
 public class UUIDString extends PrimitiveType<String> {
     public UUIDString(String value) {
-        super(value, "UUIDString", isUUID());
+        super(value, isUUID());
     }
 }

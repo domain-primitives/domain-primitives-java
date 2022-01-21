@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotNullBoolea
 
 public class BooleanNotNull extends PrimitiveType<Boolean> {
     public BooleanNotNull(Boolean value) {
-        super(value, "BooleanNotNull", isNotNullBoolean());
+        super(value, isNotNullBoolean());
     }
 }

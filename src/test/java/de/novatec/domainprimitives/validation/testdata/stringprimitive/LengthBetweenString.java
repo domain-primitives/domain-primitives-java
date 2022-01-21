@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isBetween;
 
 public class LengthBetweenString extends PrimitiveType<String> {
     public LengthBetweenString(String value) {
-        super(value, "LengthBetweenString", isBetween(3, 5));
+        super(value, isBetween(3, 5));
     }
 }

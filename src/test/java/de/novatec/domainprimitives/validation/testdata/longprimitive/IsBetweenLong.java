@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isBetween;
 
 public class IsBetweenLong extends PrimitiveType<Long> {
     public IsBetweenLong(Long value) {
-        super(value, "IsBetweenLong", isBetween(1L, 4L));
+        super(value, isBetween(1L, 4L));
     }
 }

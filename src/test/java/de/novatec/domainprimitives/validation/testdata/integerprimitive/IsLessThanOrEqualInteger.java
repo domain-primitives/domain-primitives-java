@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isLessThanOrEqu
 
 public class IsLessThanOrEqualInteger extends PrimitiveType<Integer> {
     public IsLessThanOrEqualInteger(Integer value) {
-        super(value, "IsLessThanOrEqualInteger", isLessThanOrEqual(4));
+        super(value, isLessThanOrEqual(4));
     }
 }

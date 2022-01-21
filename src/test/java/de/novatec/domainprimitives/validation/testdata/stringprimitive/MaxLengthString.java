@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.hasMaxLength;
 
 public class MaxLengthString extends PrimitiveType<String> {
     public MaxLengthString(String value) {
-        super(value, "MaxLengthString", hasMaxLength(5));
+        super(value, hasMaxLength(5));
     }
 }

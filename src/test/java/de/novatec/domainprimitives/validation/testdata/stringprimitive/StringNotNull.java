@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotNull;
 
 public class StringNotNull extends PrimitiveType<String> {
     public StringNotNull(String value) {
-        super(value, "StringNotNull", isNotNull());
+        super(value, isNotNull());
     }
 }

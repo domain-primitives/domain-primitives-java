@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotNullDouble
 
 public class NotNullDouble extends PrimitiveType<Double> {
     public NotNullDouble(Double value) {
-        super(value, "NotNullDouble", isNotNullDouble());
+        super(value, isNotNullDouble());
     }
 }

@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isGreatThanOrEq
 
 public class PersonId extends PrimitiveType<Long> {
     public PersonId(Long value) {
-        super(value, "PersonId", isGreatThanOrEqual(1L));
+        super(value, isGreatThanOrEqual(1L));
     }
 }

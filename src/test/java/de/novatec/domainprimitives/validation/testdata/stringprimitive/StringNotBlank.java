@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotBlank;
 
 public class StringNotBlank extends PrimitiveType<String> {
     public StringNotBlank(String value) {
-        super(value, "StringNotBlank", isNotBlank());
+        super(value, isNotBlank());
     }
 }

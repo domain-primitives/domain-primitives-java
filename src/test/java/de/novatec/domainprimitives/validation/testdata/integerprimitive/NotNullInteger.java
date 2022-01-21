@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isNotNullIntege
 
 public class NotNullInteger extends PrimitiveType<Integer> {
     public NotNullInteger(Integer value) {
-        super(value, "NotNullInteger", isNotNullInteger());
+        super(value, isNotNullInteger());
     }
 }

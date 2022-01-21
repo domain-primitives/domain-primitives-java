@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isGreatThanOrEq
 
 public class IsGreatThanOrEqualInteger extends PrimitiveType<Integer> {
     public IsGreatThanOrEqualInteger(Integer value) {
-        super(value, "IsGreatThanOrEqualInteger", isGreatThanOrEqual(4));
+        super(value, isGreatThanOrEqual(4));
     }
 }

@@ -6,6 +6,6 @@ import static de.novatec.domainprimitives.validation.Constraints.isInRange;
 
 public class IsBetweenInteger extends PrimitiveType<Integer> {
     public IsBetweenInteger(Integer value) {
-        super(value, "IsBetweenInteger", isInRange(1, 4));
+        super(value, isInRange(1, 4));
     }
 }
