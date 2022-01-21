@@ -4,7 +4,7 @@
 
 Primitive, self-validating immutable object types.
 
-*Invented by [Stefan Ludwig](https://github.com/slu-it)*
+*As proposed by [Stefan Ludwig](https://github.com/slu-it) in his [strongly-typed-vs-javax-validation](https://github.com/slu-it/technology-examples/tree/master/strongly-typed-vs-javax-validation) prototype.*
 
 # Table of Contents
 
@@ -22,8 +22,7 @@ The `PrimitiveType<T>` could be used to create a self-validating immutable objec
 ```java
 class Name extends PrimitiveType<String> {
     public Name(String value) {
-        super(value, "Name",
-                isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
+        super(value, isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
     }
 }
 ```

@@ -9,11 +9,9 @@ import static java.lang.String.format;
 
 public abstract class ComposedValueObject {
 
-    private final List<String> violations;
+    private final List<String> violations = new ArrayList<>();
 
-    protected ComposedValueObject() {
-        this.violations = new ArrayList<>();
-    }
+    protected ComposedValueObject() {}
 
     /**
      * Providing a starting point this stub could be used check on invariant violations.

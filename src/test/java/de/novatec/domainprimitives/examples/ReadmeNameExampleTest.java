@@ -59,7 +59,6 @@ class ReadmeNameExampleTest {
 
 class Name extends PrimitiveType<String> {
     public Name(String value) {
-        super(value, "Name",
-                isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
+        super(value, isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
     }
 }
