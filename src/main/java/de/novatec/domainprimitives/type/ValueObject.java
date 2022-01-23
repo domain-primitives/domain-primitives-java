@@ -7,7 +7,7 @@ import java.util.function.Consumer;
 
 import static de.novatec.domainprimitives.validation.Validation.none;
 
-public abstract class PrimitiveType<T> {
+public abstract class ValueObject<T> {
 
     private final T value;
     private final String label;
@@ -19,7 +19,7 @@ public abstract class PrimitiveType<T> {
      *
      * @param value The immutable value the object should have.
      */
-    public PrimitiveType(T value) {
+    public ValueObject(T value) {
         this(value, none());
     }
 
@@ -30,7 +30,7 @@ public abstract class PrimitiveType<T> {
      * @param value The inner value the object should have.
      * @param label The label or description of the object. Used e.g., for the {@link de.novatec.domainprimitives.validation.InvariantException InvariantException} message.
      */
-    public PrimitiveType(T value, String label) {
+    public ValueObject(T value, String label) {
         this(value, label, none());
     }
 
@@ -42,7 +42,7 @@ public abstract class PrimitiveType<T> {
      *                    Have a look at the constraints we provide {@link de.novatec.domainprimitives.validation.Constraints Constraints},
      *                    e.g. {@link Constraints#isNotBlank() isNotBlank()}.
      */
-    public PrimitiveType(T value, Consumer<Validation<T>> constraints) {
+    public ValueObject(T value, Consumer<Validation<T>> constraints) {
         this.value = value;
         this.label = this.getClass().getSimpleName();
         runValidation(constraints);
@@ -57,7 +57,7 @@ public abstract class PrimitiveType<T> {
      *                    Have a look at the constraints we provide {@link de.novatec.domainprimitives.validation.Constraints Constraints},
      *                    e.g. {@link Constraints#isNotBlank() isNotBlank()}.
      */
-    public PrimitiveType(T value, String label, Consumer<Validation<T>> constraints) {
+    public ValueObject(T value, String label, Consumer<Validation<T>> constraints) {
         this.value = value;
         this.label = label;
         runValidation(constraints);
@@ -89,10 +89,10 @@ public abstract class PrimitiveType<T> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PrimitiveType<?> primitiveType = (PrimitiveType<?>) o;
-        if (value == primitiveType.value) return true;
+        ValueObject<?> valueObject = (ValueObject<?>) o;
+        if (value == valueObject.value) return true;
         if (value instanceof String) {
-            return value.equals(primitiveType.value);
+            return value.equals(valueObject.value);
         }
         return false;
     }

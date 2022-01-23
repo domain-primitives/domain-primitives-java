@@ -1,4 +1,4 @@
 package de.novatec.domainprimitives.object;
 
-public abstract class Entity extends ComposedValueObject {
+public abstract class Entity extends DomainObject {
 }

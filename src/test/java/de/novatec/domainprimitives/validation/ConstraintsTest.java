@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConstraintsTest {
 
     @Nested
-    class StringPrimitiveTypeTest {
+    class StringValueObjectTest {
         private final String expectedString = "Test";
 
         @Test
@@ -140,7 +140,7 @@ public class ConstraintsTest {
     }
 
     @Nested
-    class IntegerPrimitiveTypeTest {
+    class IntegerValueObjectTest {
         private final Integer expectedInteger = 4;
 
         @Test
@@ -210,7 +210,7 @@ public class ConstraintsTest {
     }
 
     @Nested
-    class LongPrimitiveTypeTest {
+    class LongValueObjectTest {
         private final Long expectedLong = 4L;
 
         @Test
@@ -280,7 +280,7 @@ public class ConstraintsTest {
     }
 
     @Nested
-    class DoublePrimitiveTypeTest {
+    class DoubleValueObjectTest {
         private final Double expectedValue = 1.0;
 
         @Test

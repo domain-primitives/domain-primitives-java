@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PrimitiveTypeTest {
+class ValueObjectTest {
 
     @Test
     void should_set_simple_class_name_as_lable_if_none_provided() {
@@ -13,7 +13,7 @@ class PrimitiveTypeTest {
     }
 }
 
-class PrimitiveStringNoLable extends PrimitiveType<String> {
+class PrimitiveStringNoLable extends ValueObject<String> {
     protected PrimitiveStringNoLable(String value) {
         super(value);
     }

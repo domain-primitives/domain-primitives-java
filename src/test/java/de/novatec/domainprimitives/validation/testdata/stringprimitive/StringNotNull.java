@@ -1,10 +1,10 @@
 package de.novatec.domainprimitives.validation.testdata.stringprimitive;
 
-import de.novatec.domainprimitives.type.PrimitiveType;
+import de.novatec.domainprimitives.type.ValueObject;
 
 import static de.novatec.domainprimitives.validation.Constraints.isNotNull;
 
-public class StringNotNull extends PrimitiveType<String> {
+public class StringNotNull extends ValueObject<String> {
     public StringNotNull(String value) {
         super(value, isNotNull());
     }

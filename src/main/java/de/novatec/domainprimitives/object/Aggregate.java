@@ -1,4 +1,4 @@
 package de.novatec.domainprimitives.object;
 
-public abstract class Aggregate extends ComposedValueObject {
+public abstract class Aggregate extends DomainObject {
 }

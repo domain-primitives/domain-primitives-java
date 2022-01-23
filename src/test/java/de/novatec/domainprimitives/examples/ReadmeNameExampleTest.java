@@ -1,6 +1,6 @@
 package de.novatec.domainprimitives.examples;
 
-import de.novatec.domainprimitives.type.PrimitiveType;
+import de.novatec.domainprimitives.type.ValueObject;
 import de.novatec.domainprimitives.validation.InvariantException;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -57,7 +57,7 @@ class ReadmeNameExampleTest {
     }
 }
 
-class Name extends PrimitiveType<String> {
+class Name extends ValueObject<String> {
     public Name(String value) {
         super(value, isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
     }

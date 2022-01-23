@@ -15,19 +15,19 @@ Primitive, self-validating immutable object types.
 
 # 🚀Features
 
-## Primitive Type
+## ValueObject Type
 
-The `PrimitiveType<T>` could be used to create a self-validating immutable object:
+The `ValueObject<T>` could be used to create a self-validating immutable object:
 
 ```java
-class Name extends PrimitiveType<String> {
+class Name extends ValueObject<String> {
     public Name(String value) {
         super(value, isNotNull().andThen(hasMinLength(3).andThen(hasMaxLength(20))));
     }
 }
 ```
 
-It's only possible to create a valid object if it matches the pattern. The `PrimitiveType` does only provide a getter resulting in an immutable object.
+It's only possible to create a valid object if it matches the pattern. The `ValueObject` does only provide a getter resulting in an immutable object.
 
 Creating a name object with an invalid value will throw an InvariantException:
 
