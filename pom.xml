@@ -1,0 +1,207 @@
+<project
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://maven.apache.org/POM/4.0.0"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>de.novatec.domainprimitives</groupId>
+    <artifactId>domainprimitives-java</artifactId>
+    <version>0.1.0</version>
+
+    <name>Novatec | Domain Primitives</name>
+    <url>https://github.com/domain-primitives/domain-primitives-java</url>
+    <description>Primitive, self-validating immutable object types.</description>
+    <inceptionYear>2019</inceptionYear>
+
+    <organization>
+        <name>Novatec Consulting GmbH</name>
+        <url>http://www.novatec-gmbh.de</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>scm:git@github.com:domain-primitives/domain-primitives-java.git</connection>
+        <developerConnection>scm:git:git@github.com:domain-primitives/domain-primitives-java.git</developerConnection>
+        <url>git@github.com:domain-primitives/domain-primitives-java.git</url>
+    </scm>
+
+    <properties>
+
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <gpg.keyname>DomainPrimitives</gpg.keyname>
+
+        <version.junit5>5.8.2</version.junit5>
+
+        <version.maven.assembly.plugin>3.3.0</version.maven.assembly.plugin>
+        <version.maven.compiler.plugin>3.9.0</version.maven.compiler.plugin>
+        <version.maven.resources.plugin>3.2.0</version.maven.resources.plugin>
+        <version.maven.source.plugin>3.2.1</version.maven.source.plugin>
+        <version.maven.surefire.plugin>2.22.2</version.maven.surefire.plugin>
+
+        <version.license.maven.plugin>2.0.0</version.license.maven.plugin>
+
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${version.junit5}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>${version.junit5}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${version.junit5}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <!-- compilation plugins -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${version.maven.compiler.plugin}</version>
+                <configuration>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>${version.maven.source.plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- packaging plugins -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${version.maven.assembly.plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${version.maven.resources.plugin}</version>
+            </plugin>
+
+            <!-- test plugins -->
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${version.maven.surefire.plugin}</version>
+            </plugin>
+
+            <!-- other plugins -->
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${version.license.maven.plugin}</version>
+                <executions>
+                    <execution>
+                        <!-- Generate THIRD-PARTY file to be bundled with the .jar files. -->
+                        <id>generate-bundled-3rdparty-file</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-third-party</goal>
+                        </goals>
+                        <configuration>
+                            <thirdPartyFilename>THIRD-PARTY</thirdPartyFilename>
+                            <excludedScopes>test</excludedScopes>
+                            <includeTransitiveDependencies>true</includeTransitiveDependencies>
+                            <failIfWarning>true</failIfWarning>
+                            <useMissingFile>true</useMissingFile>
+                            <sortArtifactByName>true</sortArtifactByName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+    <developers>
+        <developer>
+            <id>slu</id>
+            <name>Stefan Ludwig</name>
+            <email>stefan.ludwig@novatec-gmbh.de</email>
+            <organization>Novatec Consulting GmbH</organization>
+            <organizationUrl>http://www.novatec-gmbh.de</organizationUrl>
+            <roles>
+                <role>project-lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>mse</id>
+            <name>Matthias Eschhold</name>
+            <email>matthias.eschhold@novatec-gmbh.de</email>
+            <organization>Novatec Consulting GmbH</organization>
+            <organizationUrl>http://www.novatec-gmbh.de</organizationUrl>
+            <roles>
+                <role>project-lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>sle</id>
+            <name>Sebastian Letzel</name>
+            <email>sebastian.letzel@novatec-gmbh.de</email>
+            <organization>Novatec Consulting GmbH</organization>
+            <organizationUrl>http://www.novatec-gmbh.de</organizationUrl>
+            <roles>
+                <role>project-lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+
+        <developer>
+            <id>lw</id>
+            <name>Luc Weinbrecht</name>
+            <email>luc.weinbrecht@novatec-gmbh.de</email>
+            <organization>Novatec Consulting GmbH</organization>
+            <organizationUrl>http://www.novatec-gmbh.de</organizationUrl>
+            <roles>
+                <role>project-lead</role>
+                <role>architect</role>
+                <role>developer</role>
+            </roles>
+        </developer>
+    </developers>
+
+</project>
