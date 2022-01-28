@@ -1,8 +1,11 @@
 package de.novatec.ddd.domainprimitives.validation;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.function.Consumer;
 
 import static java.lang.String.format;
+import static java.time.LocalDate.now;
 
 public class Constraints {
 
@@ -11,6 +14,8 @@ public class Constraints {
     private static final String ERROR_MESSAGE_RANGE_TEMPLATE = "%s should be between %s and %s";
     private static final String ERROR_MESSAGE_GREATER_THAN_TEMPLATE = "%s should be greater then %s";
     private static final String ERROR_MESSAGE_LESS_THAN_TEMPLATE = "%s should be less then %s";
+    private static final String ERROR_MESSAGE_IN_FUTURE_TEMPLATE = "%s should be in the future";
+    private static final String ERROR_MESSAGE_IN_PAST_TEMPLATE = "%s should be in the past";
 
     private static final String UUID_PATTERN = "[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}";
 
@@ -198,6 +203,38 @@ public class Constraints {
     public static Consumer<Validation<Boolean>> isNotNullBoolean() {
         return val -> val.constraint(
                 isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val))
+        );
+    }
+
+    // Date
+
+    public static Consumer<Validation<Date>> isInFuture() {
+        return val -> val.constraint(
+                isNotNull(val.value()) && new Date().before(val.value()),
+                () -> format(ERROR_MESSAGE_IN_FUTURE_TEMPLATE, getValueFormatted(val))
+        );
+    }
+
+    public static Consumer<Validation<Date>> isInPast() {
+        return val -> val.constraint(
+                isNotNull(val.value()) && new Date().after(val.value()),
+                () -> format(ERROR_MESSAGE_IN_PAST_TEMPLATE, getValueFormatted(val))
+        );
+    }
+
+    // LocalDate
+
+    public static Consumer<Validation<LocalDate>> isInFutureLocalDate() {
+        return val -> val.constraint(
+                isNotNull(val.value()) && now().isBefore(val.value()),
+                () -> format(ERROR_MESSAGE_IN_FUTURE_TEMPLATE, getValueFormatted(val))
+        );
+    }
+
+    public static Consumer<Validation<LocalDate>> isInPastLocalDate() {
+        return val -> val.constraint(
+                isNotNull(val.value()) && now().isAfter(val.value()),
+                () -> format(ERROR_MESSAGE_IN_PAST_TEMPLATE, getValueFormatted(val))
         );
     }
 
