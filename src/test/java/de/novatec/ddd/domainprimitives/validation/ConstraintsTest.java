@@ -1,8 +1,6 @@
 package de.novatec.ddd.domainprimitives.validation;
 
 import de.novatec.ddd.domainprimitives.validation.testdata.booleanprimitiv.BooleanNotNull;
-import de.novatec.ddd.domainprimitives.validation.testdata.date.DateInFuture;
-import de.novatec.ddd.domainprimitives.validation.testdata.date.DateInPast;
 import de.novatec.ddd.domainprimitives.validation.testdata.doubleprimitive.IsBetweenDouble;
 import de.novatec.ddd.domainprimitives.validation.testdata.doubleprimitive.IsGreatThanOrEqualDouble;
 import de.novatec.ddd.domainprimitives.validation.testdata.doubleprimitive.IsLessThanOrEqualDouble;
@@ -11,8 +9,8 @@ import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsBe
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsGreatThanOrEqualInteger;
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsLessThanOrEqualInteger;
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.NotNullInteger;
-import de.novatec.ddd.domainprimitives.validation.testdata.localdate.LocalDateInFuture;
-import de.novatec.ddd.domainprimitives.validation.testdata.localdate.LocalDateInPast;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInFuture;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInPast;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsBetweenLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsGreatThanOrEqualLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsLessThanOrEqualLong;
@@ -25,7 +23,7 @@ import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.temporal.Temporal;
 import java.util.UUID;
 
 import static java.lang.Boolean.TRUE;
@@ -377,100 +375,48 @@ public class ConstraintsTest {
     }
 
     @Nested
-    class DatePrimitivTypeTest {
+    class TemporalPrimitivTypeTest {
 
         @Nested
-        class FutureDateTest {
+        class FutureTemporalTest {
             @Test
             void should_create_object_if_value_is_in_the_future() {
-                Date future = new Date();
-                future.setTime(future.getTime() + 1000);
-                DateInFuture dateInFuture = new DateInFuture(future);
+                Temporal future = of(now().getYear() + 1, now().getMonth(), now().getDayOfMonth());
+                TemporalInFuture dateInFuture = new TemporalInFuture(future);
                 assertNotNull(dateInFuture);
                 assertEquals(future, dateInFuture.getValue());
             }
 
             @Test
             void should_throw_invariant_exception_if_date_is_now() {
-                assertThrows(InvariantException.class, () -> new DateInFuture(new Date()));
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(now()));
             }
 
             @Test
             void should_throw_invariant_exception_if_date_has_passed() {
-                Date past = new Date();
-                past.setTime(past.getTime() - 1000);
-                assertThrows(InvariantException.class, () -> new DateInFuture(past));
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(of(2020, 1, 1)));
             }
         }
 
         @Nested
-        class PastDateTest {
+        class PastTemporalTest {
             @Test
             void should_create_object_if_value_is_in_the_past() {
-                Date past = new Date();
-                past.setTime(past.getTime() - 1000);
-                DateInPast dateInPast = new DateInPast(past);
+                Temporal past = of(2020, 1, 1);
+                TemporalInPast dateInPast = new TemporalInPast(past);
                 assertNotNull(dateInPast);
                 assertEquals(past, dateInPast.getValue());
             }
 
             @Test
             void should_throw_invariant_exception_if_date_is_now() {
-                assertThrows(InvariantException.class, () -> new DateInPast(new Date()));
+                assertThrows(InvariantException.class, () -> new TemporalInPast(now()));
             }
 
             @Test
             void should_throw_invariant_exception_if_date_is_in_future() {
-                Date future = new Date();
-                future.setTime(future.getTime() + 1000);
-                assertThrows(InvariantException.class, () -> new DateInPast(future));
-            }
-        }
-    }
-
-    @Nested
-    class LocalDatePrimitivTypeTest {
-
-        @Nested
-        class FutureLocalDateTest {
-            @Test
-            void should_create_object_if_value_is_in_the_future() {
-                LocalDate future = of(now().getYear(), now().getMonth(), now().getDayOfMonth() + 1);
-                LocalDateInFuture dateInFuture = new LocalDateInFuture(future);
-                assertNotNull(dateInFuture);
-                assertEquals(future, dateInFuture.getValue());
-            }
-
-            @Test
-            void should_throw_invariant_exception_if_date_is_now() {
-                assertThrows(InvariantException.class, () -> new LocalDateInFuture(now()));
-            }
-
-            @Test
-            void should_throw_invariant_exception_if_date_has_passed() {
-                assertThrows(InvariantException.class, () -> new LocalDateInFuture(of(2020, 1, 1)));
-            }
-        }
-
-        @Nested
-        class PastLocalDateTest {
-            @Test
-            void should_create_object_if_value_is_in_the_past() {
-                LocalDate past = of(2020, 1, 1);
-                LocalDateInPast dateInPast = new LocalDateInPast(past);
-                assertNotNull(dateInPast);
-                assertEquals(past, dateInPast.getValue());
-            }
-
-            @Test
-            void should_throw_invariant_exception_if_date_is_now() {
-                assertThrows(InvariantException.class, () -> new LocalDateInPast(now()));
-            }
-
-            @Test
-            void should_throw_invariant_exception_if_date_is_in_future() {
-                LocalDate future = of(now().getYear(), now().getMonth(), now().getDayOfMonth() + 1);
-                assertThrows(InvariantException.class, () -> new LocalDateInPast(future));
+                LocalDate future = of(now().getYear() + 1, now().getMonth(), now().getDayOfMonth());
+                assertThrows(InvariantException.class, () -> new TemporalInPast(future));
             }
         }
     }

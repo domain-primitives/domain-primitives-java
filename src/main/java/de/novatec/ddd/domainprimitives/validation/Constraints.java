@@ -1,11 +1,12 @@
 package de.novatec.ddd.domainprimitives.validation;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.time.*;
+import java.time.temporal.Temporal;
 import java.util.function.Consumer;
 
 import static java.lang.String.format;
-import static java.time.LocalDate.now;
+import static java.time.LocalDateTime.now;
+import static java.util.Calendar.getInstance;
 
 public class Constraints {
 
@@ -206,34 +207,18 @@ public class Constraints {
         );
     }
 
-    // Date
+    // Temporal
 
-    public static Consumer<Validation<Date>> isInFuture() {
+    public static Consumer<Validation<Temporal>> isInFuture() {
         return val -> val.constraint(
-                isNotNull(val.value()) && new Date().before(val.value()),
+                isNotNull(val.value()) && isInFuture(val.value()),
                 () -> format(ERROR_MESSAGE_IN_FUTURE_TEMPLATE, getValueFormatted(val))
         );
     }
 
-    public static Consumer<Validation<Date>> isInPast() {
+    public static Consumer<Validation<Temporal>> isInPast() {
         return val -> val.constraint(
-                isNotNull(val.value()) && new Date().after(val.value()),
-                () -> format(ERROR_MESSAGE_IN_PAST_TEMPLATE, getValueFormatted(val))
-        );
-    }
-
-    // LocalDate
-
-    public static Consumer<Validation<LocalDate>> isInFutureLocalDate() {
-        return val -> val.constraint(
-                isNotNull(val.value()) && now().isBefore(val.value()),
-                () -> format(ERROR_MESSAGE_IN_FUTURE_TEMPLATE, getValueFormatted(val))
-        );
-    }
-
-    public static Consumer<Validation<LocalDate>> isInPastLocalDate() {
-        return val -> val.constraint(
-                isNotNull(val.value()) && now().isAfter(val.value()),
+                isNotNull(val.value()) && isInPast(val.value()),
                 () -> format(ERROR_MESSAGE_IN_PAST_TEMPLATE, getValueFormatted(val))
         );
     }
@@ -245,5 +230,37 @@ public class Constraints {
     private static <T> String getValueFormatted(Validation<T> value) {
         String val = value != null ? String.valueOf(value.value()) : NULL;
         return "("  + val + ")";
+    }
+
+    private static boolean isInPast(Temporal temporal) {
+        if (temporal instanceof LocalDate) {
+            return ((LocalDate) temporal).isBefore(LocalDate.now());
+        } else if (temporal instanceof LocalDateTime) {
+            return ((LocalDateTime) temporal).isBefore(LocalDateTime.now());
+        } else if (temporal instanceof ZonedDateTime) {
+            return ((ZonedDateTime) temporal).isBefore(ZonedDateTime.now());
+        } else if (temporal instanceof OffsetTime) {
+            return ((OffsetTime) temporal).isBefore(OffsetTime.now());
+        } else if (temporal instanceof OffsetDateTime) {
+            return ((OffsetDateTime) temporal).isBefore(OffsetDateTime.now());
+        } else {
+            throw new DateTimeException("Unsupported Temporal class: " + temporal.getClass());
+        }
+    }
+
+    private static boolean isInFuture(Temporal temporal) {
+        if (temporal instanceof LocalDate) {
+            return ((LocalDate) temporal).isAfter(LocalDate.now());
+        } else if (temporal instanceof LocalDateTime) {
+            return ((LocalDateTime) temporal).isAfter(LocalDateTime.now());
+        } else if (temporal instanceof ZonedDateTime) {
+            return ((ZonedDateTime) temporal).isAfter(ZonedDateTime.now());
+        } else if (temporal instanceof OffsetTime) {
+            return ((OffsetTime) temporal).isAfter(OffsetTime.now());
+        } else if (temporal instanceof OffsetDateTime) {
+            return ((OffsetDateTime) temporal).isAfter(OffsetDateTime.now());
+        } else {
+            throw new DateTimeException("Unsupported Temporal class: " + temporal.getClass());
+        }
     }
 }
