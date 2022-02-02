@@ -5,8 +5,6 @@ import java.time.temporal.Temporal;
 import java.util.function.Consumer;
 
 import static java.lang.String.format;
-import static java.time.LocalDateTime.now;
-import static java.util.Calendar.getInstance;
 
 public class Constraints {
 
@@ -237,6 +235,8 @@ public class Constraints {
             return ((LocalDate) temporal).isBefore(LocalDate.now());
         } else if (temporal instanceof LocalDateTime) {
             return ((LocalDateTime) temporal).isBefore(LocalDateTime.now());
+        } else if (temporal instanceof LocalTime) {
+            return ((LocalTime) temporal).isBefore(LocalTime.now());
         } else if (temporal instanceof ZonedDateTime) {
             return ((ZonedDateTime) temporal).isBefore(ZonedDateTime.now());
         } else if (temporal instanceof OffsetTime) {
@@ -253,6 +253,8 @@ public class Constraints {
             return ((LocalDate) temporal).isAfter(LocalDate.now());
         } else if (temporal instanceof LocalDateTime) {
             return ((LocalDateTime) temporal).isAfter(LocalDateTime.now());
+        } else if (temporal instanceof LocalTime) {
+            return ((LocalTime) temporal).isAfter(LocalTime.now());
         } else if (temporal instanceof ZonedDateTime) {
             return ((ZonedDateTime) temporal).isAfter(ZonedDateTime.now());
         } else if (temporal instanceof OffsetTime) {

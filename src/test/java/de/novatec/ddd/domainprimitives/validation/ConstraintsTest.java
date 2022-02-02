@@ -9,26 +9,28 @@ import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsBe
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsGreatThanOrEqualInteger;
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.IsLessThanOrEqualInteger;
 import de.novatec.ddd.domainprimitives.validation.testdata.integerprimitive.NotNullInteger;
-import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInFuture;
-import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInPast;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsBetweenLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsGreatThanOrEqualLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsLessThanOrEqualLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.NotNullLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.stringprimitive.*;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInFuture;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInPast;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.time.LocalDate;
+import java.time.DateTimeException;
 import java.time.temporal.Temporal;
 import java.util.UUID;
 
+import static de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator.future;
+import static de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator.past;
 import static java.lang.Boolean.TRUE;
-import static java.time.LocalDate.now;
-import static java.time.LocalDate.of;
+import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConstraintsTest {
@@ -379,12 +381,24 @@ public class ConstraintsTest {
 
         @Nested
         class FutureTemporalTest {
-            @Test
-            void should_create_object_if_value_is_in_the_future() {
-                Temporal future = of(now().getYear() + 1, now().getMonth(), now().getDayOfMonth());
-                TemporalInFuture dateInFuture = new TemporalInFuture(future);
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideFutureTemporals")
+            void should_create_object_if_value_is_in_the_future(Temporal futureTemporal) {
+                TemporalInFuture dateInFuture = new TemporalInFuture(futureTemporal);
                 assertNotNull(dateInFuture);
-                assertEquals(future, dateInFuture.getValue());
+                assertEquals(futureTemporal, dateInFuture.getValue());
+            }
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideUnsupportedTemporals")
+            void should_throw_date_time_exception_if_temporal_type_is_unsupported(Temporal temporal) {
+                assertThrows(DateTimeException.class, () -> new TemporalInFuture(temporal));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_is_null() {
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(null));
             }
 
             @Test
@@ -394,29 +408,35 @@ public class ConstraintsTest {
 
             @Test
             void should_throw_invariant_exception_if_date_has_passed() {
-                assertThrows(InvariantException.class, () -> new TemporalInFuture(of(2020, 1, 1)));
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(past()));
             }
         }
 
         @Nested
         class PastTemporalTest {
-            @Test
-            void should_create_object_if_value_is_in_the_past() {
-                Temporal past = of(2020, 1, 1);
-                TemporalInPast dateInPast = new TemporalInPast(past);
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#providePastTemporals")
+            void should_create_object_if_value_is_in_the_past(Temporal pastTemporal) {
+                TemporalInPast dateInPast = new TemporalInPast(pastTemporal);
                 assertNotNull(dateInPast);
-                assertEquals(past, dateInPast.getValue());
+                assertEquals(pastTemporal, dateInPast.getValue());
+            }
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideUnsupportedTemporals")
+            void should_throw_date_time_exception_if_temporal_type_is_unsupported(Temporal temporal) {
+                assertThrows(DateTimeException.class, () -> new TemporalInPast(temporal));
             }
 
             @Test
-            void should_throw_invariant_exception_if_date_is_now() {
-                assertThrows(InvariantException.class, () -> new TemporalInPast(now()));
+            void should_throw_invariant_exception_if_date_is_null() {
+                assertThrows(InvariantException.class, () -> new TemporalInPast(null));
             }
 
             @Test
             void should_throw_invariant_exception_if_date_is_in_future() {
-                LocalDate future = of(now().getYear() + 1, now().getMonth(), now().getDayOfMonth());
-                assertThrows(InvariantException.class, () -> new TemporalInPast(future));
+                assertThrows(InvariantException.class, () -> new TemporalInPast(future()));
             }
         }
     }
