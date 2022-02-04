@@ -31,7 +31,7 @@ public final class Validation<T> {
     }
 
     private void validate() throws InvariantException {
-        if (!problems.isEmpty()) throw new InvariantException(label, problems);
+        if (!problems.isEmpty()) throw new ValueInvariantException(label, problems);
     }
 
     public void constraint(Boolean value, Supplier<String> descriptionSupplier) {
