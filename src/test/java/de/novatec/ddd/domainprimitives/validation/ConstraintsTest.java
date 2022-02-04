@@ -14,15 +14,23 @@ import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsGreat
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.IsLessThanOrEqualLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.longprimitive.NotNullLong;
 import de.novatec.ddd.domainprimitives.validation.testdata.stringprimitive.*;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInFuture;
+import de.novatec.ddd.domainprimitives.validation.testdata.temporal.TemporalInPast;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.NullSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.time.DateTimeException;
+import java.time.temporal.Temporal;
 import java.util.UUID;
 
+import static de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator.future;
+import static de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator.past;
 import static java.lang.Boolean.TRUE;
+import static java.time.LocalDateTime.now;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConstraintsTest {
@@ -32,7 +40,7 @@ public class ConstraintsTest {
         private final String expectedString = "Test";
 
         @Test
-        void should_create_object_if_valid_is_not_null() {
+        void should_create_object_if_value_is_not_null() {
             StringNotNull stringNotNull = new StringNotNull(expectedString);
             assertNotNull(stringNotNull);
             assertEquals(expectedString, stringNotNull.getValue());
@@ -44,7 +52,7 @@ public class ConstraintsTest {
         }
 
         @Test
-        void should_create_object_if_valid_is_blank() {
+        void should_create_object_if_value_is_blank() {
             StringNotBlank stringNotBlankObj = new StringNotBlank(expectedString);
             assertNotNull(stringNotBlankObj);
             assertEquals(expectedString, stringNotBlankObj.getValue());
@@ -58,7 +66,7 @@ public class ConstraintsTest {
         }
 
         @Test
-        void should_create_object_if_valid_is_pattern() {
+        void should_create_object_if_value_is_pattern() {
             StringPattern stringPattern = new StringPattern(expectedString);
             assertNotNull(stringPattern);
             assertEquals(expectedString, stringPattern.getValue());
@@ -356,7 +364,7 @@ public class ConstraintsTest {
     class BooleanPrimitivTypeTest {
 
         @Test
-        void should_create_object_if_valid_is_not_null() {
+        void should_create_object_if_value_is_not_null() {
             BooleanNotNull booleanNotNull = new BooleanNotNull(TRUE);
             assertNotNull(booleanNotNull);
             assertTrue(booleanNotNull.getValue());
@@ -365,6 +373,71 @@ public class ConstraintsTest {
         @Test
         void should_throw_invariant_exception_if_string_is_null() {
             assertThrows(InvariantException.class, () -> new BooleanNotNull(null));
+        }
+    }
+
+    @Nested
+    class TemporalPrimitivTypeTest {
+
+        @Nested
+        class FutureTemporalTest {
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideFutureTemporals")
+            void should_create_object_if_value_is_in_the_future(Temporal futureTemporal) {
+                TemporalInFuture dateInFuture = new TemporalInFuture(futureTemporal);
+                assertNotNull(dateInFuture);
+                assertEquals(futureTemporal, dateInFuture.getValue());
+            }
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideUnsupportedTemporals")
+            void should_throw_date_time_exception_if_temporal_type_is_unsupported(Temporal temporal) {
+                assertThrows(DateTimeException.class, () -> new TemporalInFuture(temporal));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_is_null() {
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(null));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_is_now() {
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(now()));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_has_passed() {
+                assertThrows(InvariantException.class, () -> new TemporalInFuture(past()));
+            }
+        }
+
+        @Nested
+        class PastTemporalTest {
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#providePastTemporals")
+            void should_create_object_if_value_is_in_the_past(Temporal pastTemporal) {
+                TemporalInPast dateInPast = new TemporalInPast(pastTemporal);
+                assertNotNull(dateInPast);
+                assertEquals(pastTemporal, dateInPast.getValue());
+            }
+
+            @ParameterizedTest
+            @MethodSource("de.novatec.ddd.domainprimitives.validation.argumentgenerator.TemporalGenerator#provideUnsupportedTemporals")
+            void should_throw_date_time_exception_if_temporal_type_is_unsupported(Temporal temporal) {
+                assertThrows(DateTimeException.class, () -> new TemporalInPast(temporal));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_is_null() {
+                assertThrows(InvariantException.class, () -> new TemporalInPast(null));
+            }
+
+            @Test
+            void should_throw_invariant_exception_if_date_is_in_future() {
+                assertThrows(InvariantException.class, () -> new TemporalInPast(future()));
+            }
         }
     }
 }
