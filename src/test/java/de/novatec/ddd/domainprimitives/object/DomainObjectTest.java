@@ -26,7 +26,8 @@ class DomainObjectTest {
         Name name = new Name("Peter");
         InvariantException exception = assertThrows(InvariantException.class, () -> new Person(null, name));
 
-        assertEquals("Value(s) of Person is not valid: Person ID should not be null.", exception.getMessage());
+        assertEquals("Value(s) of Person is not valid:\r\n"
+                + "  Value(s) of Person ID is not valid: Person ID (null) should not be null.", exception.getMessage());
     }
 
     @Test
@@ -35,13 +36,16 @@ class DomainObjectTest {
         Name name = new Name("Peter");
         InvariantException exception = assertThrows(InvariantException.class, () -> new Person(personId,name));
 
-        assertEquals("Value(s) of Person is not valid: This is not allowed.", exception.getMessage());
+        assertEquals("Value(s) of Person is not valid:\r\n"
+                + "  Value(s) of PersonID and Name Constraint is not valid: PersonID and Name Constraint Name Peter with id 12 is not allowed.", exception.getMessage());
     }
 
     @Test
     void should_throw_invariant_exception_if_field_is_null_with_multiple_fields() {
         InvariantException exception = assertThrows(InvariantException.class, () -> new Person(null, null));
 
-        assertEquals("Value(s) of Person is not valid: Person ID should not be null. Name should not be null.", exception.getMessage());
+        assertEquals("Value(s) of Person is not valid:\r\n"
+                + "  Value(s) of Person ID is not valid: Person ID (null) should not be null.\r\n"
+                + "  Value(s) of Name is not valid: Name (null) should not be null.", exception.getMessage());
     }
 }

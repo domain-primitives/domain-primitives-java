@@ -3,6 +3,7 @@ package de.novatec.ddd.domainprimitives.validation;
 import java.time.*;
 import java.time.temporal.Temporal;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static java.lang.String.format;
 
@@ -21,6 +22,9 @@ public class Constraints {
     private Constraints() {
     }
 
+    public static Consumer<Validation<Supplier<Boolean>>> conformsCheck(Supplier<String> descriptionSupplier) {
+        return val -> val.constraint(!val.value().get(), descriptionSupplier);
+    }
     // String
 
     public static Consumer<Validation<String>> isNotNull() {
@@ -264,5 +268,9 @@ public class Constraints {
         } else {
             throw new DateTimeException("Unsupported Temporal class: " + temporal.getClass());
         }
+    }
+
+    public static Consumer<Validation<Object>> isNotNullObject() {
+        return val -> val.constraint(isNotNull(val.value()), () -> format(NULL_ERROR_MESSAGE_TEMPLATE, getValueFormatted(val)));
     }
 }
