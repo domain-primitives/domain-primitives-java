@@ -3,6 +3,8 @@ package de.novatec.ddd.domainprimitives.assertion;
 import de.novatec.ddd.domainprimitives.type.BooleanValueObject;
 import de.novatec.ddd.domainprimitives.type.StringValueObject;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.BooleanAssert;
+import org.assertj.core.api.StringAssert;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -23,9 +25,9 @@ class ValueObjectAssertTests {
 
 			@Test
 			void passesForCorrectValue() {
-				StringExampleObject foo = getExample("foo");
+				StringExampleObject foo = getExample("foobar");
 
-				assertThat(foo).hasValue("foo");
+				assertThat(foo).hasValue("foobar");
 			}
 
 			@Test
@@ -38,23 +40,14 @@ class ValueObjectAssertTests {
 		}
 
 		@Nested
-		class HasValueContainingAssert {
+		class ValueDelegate {
 
 			@Test
-			void passesForContainingValue() {
-				StringExampleObject foo = getExample("FooBar");
-
-				assertThat(foo).hasValueContaining("oB");
-			}
-
-			@Test
-			void failsForNotContainingValue() {
+			void delegatesToValueAssert() {
 				StringExampleObject foo = getExample("foo");
 
-				Assertions.assertThatThrownBy(() -> assertThat(foo).hasValueContaining("b"))
-						.isInstanceOf(AssertionError.class);
+				Assertions.assertThat(assertThat(foo).value()).isInstanceOf(StringAssert.class);
 			}
-
 		}
 
 		@Nested
@@ -66,14 +59,6 @@ class ValueObjectAssertTests {
 				StringValueObjectAssert<StringValueObject> returned = original.hasValue("foo");
 				Assertions.assertThat(returned).isSameAs(original);
 			}
-
-			@Test
-			void hasValueContaining() {
-				StringValueObjectAssert<StringValueObject> original = assertThat(getExample("Foobar"));
-				StringValueObjectAssert<StringValueObject> returned = original.hasValueContaining("ob");
-				Assertions.assertThat(returned).isSameAs(original);
-			}
-
 		}
 	}
 
@@ -99,6 +84,36 @@ class ValueObjectAssertTests {
 			}
 		}
 
+		@Nested
+		class ValueNotNull {
+
+			@Test
+			void passesForCorrectValue() {
+				BooleanExampleObject foo = new BooleanExampleObject(true);
+
+				assertThat(foo).hasNotNullValue();
+			}
+
+			@Test
+			void failsForWrongValue() {
+				BooleanExampleObject foo = new BooleanExampleObject(null);
+
+				Assertions.assertThatThrownBy(() -> assertThat(foo).hasNotNullValue())
+						.isInstanceOf(AssertionError.class);
+			}
+		}
+
+		@Nested
+		class ValueDelegate {
+
+			@Test
+			void delegatesToValueAssert() {
+				BooleanExampleObject foo = new BooleanExampleObject(true);
+
+				Assertions.assertThat(assertThat(foo).value()).isInstanceOf(BooleanAssert.class);
+			}
+		}
+
 
 		@Nested
 		class AssertionsProvideFluentApi {
@@ -107,6 +122,13 @@ class ValueObjectAssertTests {
 			void hasValue() {
 				BooleanValueObjectAssert<BooleanValueObject> original = assertThat(new BooleanExampleObject(true));
 				BooleanValueObjectAssert<BooleanValueObject> returned = original.hasValue(true);
+				Assertions.assertThat(returned).isSameAs(original);
+			}
+
+			@Test
+			void hasValueNotNull() {
+				BooleanValueObjectAssert<BooleanValueObject> original = assertThat(new BooleanExampleObject(true));
+				BooleanValueObjectAssert<BooleanValueObject> returned = original.hasNotNullValue();
 				Assertions.assertThat(returned).isSameAs(original);
 			}
 		}
