@@ -12,6 +12,9 @@ jobs:
         with:
           java-version: '11'
           distribution: 'adopt'
+          server-id: ossrh
+          server-username: OSSRH_USERNAME
+          server-password: OSSRH_PASSWORD
 
       - id: install-gpg
         name: Install GPG Secret Key
