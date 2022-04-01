@@ -38,16 +38,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-        <gpg.keyname>DomainPrimitives</gpg.keyname>
-
         <version.junit5>5.8.2</version.junit5>
 
         <version.maven.assembly.plugin>3.3.0</version.maven.assembly.plugin>
         <version.maven.compiler.plugin>3.9.0</version.maven.compiler.plugin>
+        <version.maven.gpg.plugin>3.0.1</version.maven.gpg.plugin>
+        <version.maven.javadoc.plugin>3.3.2</version.maven.javadoc.plugin>
         <version.maven.resources.plugin>3.2.0</version.maven.resources.plugin>
         <version.maven.source.plugin>3.2.1</version.maven.source.plugin>
         <version.maven.surefire.plugin>2.22.2</version.maven.surefire.plugin>
 
+        <version.nexus-staging.maven.plugin>1.6.12</version.nexus-staging.maven.plugin>
         <version.license.maven.plugin>2.0.0</version.license.maven.plugin>
 
     </properties>
@@ -99,6 +100,23 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>${version.maven.javadoc.plugin}</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <detectJavaApiLink>false</detectJavaApiLink>
+                </configuration>
             </plugin>
 
             <!-- packaging plugins -->
@@ -204,4 +222,51 @@
         </developer>
     </developers>
 
+    <profiles>
+        <profile>
+            <id>ossrh</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <properties>
+                <gpg.executable>gpg</gpg.executable>
+            </properties>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>${version.nexus-staging.maven.plugin}</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <!--  Change to true once the process works as intended! -->
+                            <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${version.maven.gpg.plugin}</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <gpgArguments>
+                                <arg>--pinentry-mode</arg>
+                                <arg>loopback</arg>
+                            </gpgArguments>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
