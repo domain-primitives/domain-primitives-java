@@ -92,7 +92,7 @@ Providing methods for null-validation (`validateNotNull`) and adding custom vali
 
 # 📚Releases
 
-tbd
+All available releases can be viewed in the [release overview](https://github.com/domain-primitives/domain-primitives-java/releases).
 
 # 👩‍💻/👨‍💻Contributing
 
