@@ -3,6 +3,7 @@ package io.github.domainprimitives.object;
 import io.github.domainprimitives.object.testdata.Name;
 import io.github.domainprimitives.object.testdata.Person;
 import io.github.domainprimitives.object.testdata.PersonId;
+import io.github.domainprimitives.type.ValueObject;
 import io.github.domainprimitives.validation.InvariantException;
 import org.junit.jupiter.api.Test;
 
@@ -43,5 +44,19 @@ class DomainObjectTest {
         InvariantException exception = assertThrows(InvariantException.class, () -> new Person(null, null));
 
         assertEquals("Value(s) of Person is not valid: Person ID should not be null. Name should not be null.", exception.getMessage());
+    }
+
+    @Test
+    void should_be_equal_in_content_not_memory_location() {
+        final IntergerValueObject first = new IntergerValueObject(128);
+        final IntergerValueObject second = new IntergerValueObject(128);
+
+        assertTrue(first.equals(second));
+    }
+}
+
+class IntergerValueObject extends ValueObject<Integer> {
+    public IntergerValueObject(Integer value) {
+        super(value);
     }
 }
