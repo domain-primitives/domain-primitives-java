@@ -89,7 +89,7 @@ public abstract class ValueObject<T> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ValueObject<?> valueObject = (ValueObject<?>) o;
-        if (value == valueObject.value) return true;
+        if (value.equals(valueObject.value)) return true;
         if (value instanceof String) {
             return value.equals(valueObject.value);
         }
