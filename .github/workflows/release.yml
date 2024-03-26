@@ -1,10 +1,10 @@
 name: Maven Release
 on:
   release:
-    types: [created]
+    types: [published]
 jobs:
   publish:
-    if: startsWith(github.event.release.tag_name, 'v')
+    if: ${{ startsWith(github.event.release.tag_name, 'v') }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
